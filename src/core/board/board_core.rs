@@ -1,6 +1,7 @@
+#[allow(dead_code)]
 pub struct Board {
     // Normal Info
-    state: Vec<char>,
+    pub state: Vec<char>,
     active_color: bool, // true for white, false for black
     castling: String,
     en_passant: String,
@@ -32,10 +33,8 @@ pub fn get_state_from_fen(fen: &str) -> Vec<char> {
     for file in files {
         for i in file.chars() {
             if i.is_digit(10) {
-                println!("{} is a number", i);
                 n += i.to_digit(10).unwrap() as usize;
             } else if i.is_alphabetic() {
-                println!("{} is a piece", i);
                 state[n] = i;
                 n += 1
             } else {
