@@ -46,4 +46,14 @@ mod tests {
         let black_pawns = bitboard_from_char('p', &default_board_state);
         assert_eq!(black_pawns, 71776119061217280);
     }
+
+    #[test]
+    fn coordinates_to_indices() {
+        use super::super::board_utils::{coordinates_from_index, index_from_coordinates};
+
+        for i in 0..64 {
+            let coords = coordinates_from_index(i);
+            assert_eq!(i, index_from_coordinates(&coords));
+        }
+    }
 }

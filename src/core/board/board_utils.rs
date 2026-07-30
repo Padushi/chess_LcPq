@@ -48,3 +48,17 @@ pub fn print_board(board: &Board, white_at_bottom: bool) {
         }
     }
 }
+
+pub fn index_from_coordinates(coords: &str) -> usize {
+    let file = coords.chars().nth(0).unwrap() as usize - 97;
+    let rank = coords.chars().nth(1).unwrap().to_digit(10).unwrap() as usize;
+
+    return (rank - 1) * 8 + file;
+}
+
+pub fn coordinates_from_index(index: usize) -> String {
+    let file = ((97 + index % 8) as u8) as char;
+    let rank = index / 8 + 1;
+
+    return format!("{file}{rank}");
+}
