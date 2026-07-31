@@ -2,26 +2,26 @@
 pub struct Board {
     // Normal Info
     pub state: Vec<char>,
-    active_color: bool, // true for white, false for black
-    castling: String,
-    en_passant: String,
-    halfmove: usize,
-    fullmove: usize,
+    pub active_color: bool, // true for white, false for black
+    pub castling: String,
+    pub en_passant: String,
+    pub halfmove: usize,
+    pub fullmove: usize,
 
     // Bitboards
-    white_king: u64,
-    white_queen: u64,
-    white_rook: u64,
-    white_bishop: u64,
-    white_knight: u64,
-    white_pawn: u64,
+    pub white_king: u64,
+    pub white_queen: u64,
+    pub white_rook: u64,
+    pub white_bishop: u64,
+    pub white_knight: u64,
+    pub white_pawn: u64,
 
-    black_king: u64,
-    black_queen: u64,
-    black_rook: u64,
-    black_bishop: u64,
-    black_knight: u64,
-    black_pawn: u64,
+    pub black_king: u64,
+    pub black_queen: u64,
+    pub black_rook: u64,
+    pub black_bishop: u64,
+    pub black_knight: u64,
+    pub black_pawn: u64,
 }
 
 pub fn get_state_from_fen(fen: &str) -> Vec<char> {
@@ -47,30 +47,60 @@ pub fn get_state_from_fen(fen: &str) -> Vec<char> {
 }
 
 pub fn build_board_from_fen(fen: &str) -> Board {
+    use crate::core::board::bitboards;
+
     let fen_areas: Vec<&str> = fen.split(' ').collect();
 
+    let state = get_state_from_fen(fen_areas[0]);
+
     Board {
-        state: get_state_from_fen(fen_areas[0]),
+        state: state.clone(),
         active_color: match fen_areas[1] {
             "w" => true,
             "b" => false,
-            &_ => todo!("Active color is neither white(w) nor black(b)"),
+            &_ => panic!("Active color is neither white(w) nor black(b)"),
         },
         castling: String::from("KQkq"),
         en_passant: String::from("e3"),
         halfmove: 0,
         fullmove: 0,
-        white_king: 0,
-        white_queen: 0,
-        white_rook: 0,
-        white_bishop: 0,
-        white_knight: 0,
-        white_pawn: 0,
-        black_king: 0,
-        black_queen: 0,
-        black_rook: 0,
-        black_bishop: 0,
-        black_knight: 0,
-        black_pawn: 0,
+
+        white_king: bitboards::bitboard_from_char('K', &state),
+        white_queen: bitboards::bitboard_from_char('Q', &state),
+        white_rook: bitboards::bitboard_from_char('R', &state),
+        white_bishop: bitboards::bitboard_from_char('B', &state),
+        white_knight: bitboards::bitboard_from_char('N', &state),
+        white_pawn: bitboards::bitboard_from_char('P', &state),
+
+        black_king: bitboards::bitboard_from_char('k', &state),
+        black_queen: bitboards::bitboard_from_char('q', &state),
+        black_rook: bitboards::bitboard_from_char('r', &state),
+        black_bishop: bitboards::bitboard_from_char('b', &state),
+        black_knight: bitboards::bitboard_from_char('n', &state),
+        black_pawn: bitboards::bitboard_from_char('p', &state),
+    }
+}
+
+impl Board {
+    pub fn white_occupancy(&self) -> u64 {
+        return self.white_king
+            | self.white_queen
+            | self.white_rook
+            | self.white_bishop
+            | self.white_knight
+            | self.white_pawn;
+    }
+
+    pub fn black_occupancy(&self) -> u64 {
+        return self.black_king
+            | self.black_queen
+            | self.black_rook
+            | self.black_bishop
+            | self.black_knight
+            | self.black_pawn;
+    }
+
+    pub fn all_occupancy(&self) -> u64 {
+        return self.white_occupancy() | self.black_occupancy();
     }
 }

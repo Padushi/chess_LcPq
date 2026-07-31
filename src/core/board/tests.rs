@@ -56,4 +56,15 @@ mod tests {
             assert_eq!(i, index_from_coordinates(&coords));
         }
     }
+
+    #[test]
+    fn color_occupancies() {
+        let fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        let default_board = super::super::board_core::build_board_from_fen(fen);
+
+        use super::super::board_core::Board;
+
+        assert_eq!(default_board.white_occupancy(), 0xFFFF);
+        assert_eq!(default_board.black_occupancy(), 0xFFFF000000000000);
+    }
 }
