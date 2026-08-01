@@ -18,3 +18,9 @@ pub fn knight_attacks_from_square(sq: usize) -> u64 {
 
     attacks
 }
+
+pub fn init_knight_attacks() -> [u64; 64] {
+    let bitboards: [u64; 64] = std::array::from_fn(knight_attacks_from_square);
+    bitboards
+}
+
