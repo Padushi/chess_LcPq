@@ -10,7 +10,7 @@ pub fn bitboard_from_char(piece: char, board_state: &Vec<char>) -> u64 {
 }
 
 pub fn print_bitboard(bitboard: u64) {
-    let rank = bitboard.to_be_bytes();
+    let rank = bitboard.reverse_bits().to_le_bytes();
     for j in rank {
         println!("{:08b}", j);
     }
