@@ -5,7 +5,7 @@ mod tests {
     #[test]
     fn bitboard_from_char_handles_all_default_pieces() {
         use super::super::bitboards::bitboard_from_char;
-        let default_board_state = board_core::build_board_from_fen(
+        let default_board_state = board_core::Board::new_from_fen(
             "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         )
         .state;
@@ -60,7 +60,7 @@ mod tests {
     #[test]
     fn color_occupancies() {
         let fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        let default_board = super::super::board_core::build_board_from_fen(fen);
+        let default_board = super::super::board_core::Board::new_from_fen(fen);
 
         assert_eq!(default_board.white_occupancy(), 0xFFFF);
         assert_eq!(default_board.black_occupancy(), 0xFFFF000000000000);
